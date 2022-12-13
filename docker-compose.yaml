@@ -1,0 +1,25 @@
+services:
+
+  api:
+    build: .
+    container_name: api
+    restart: always
+    environment:
+      MONGODB_URI: mongodb://root:example@mongo:27017/
+    ports:
+      - 3001:5000
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - devtube-mongo:/data/db
+
+volumes:
+  devtube-mongo:
