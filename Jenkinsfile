@@ -101,7 +101,7 @@ pipeline {
     always {
       sh '''
         docker-compose down
-        docker image rm api-test
+        docker image rm test-api
       '''
     }
   }
