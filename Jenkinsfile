@@ -54,6 +54,7 @@ pipeline {
             sh "yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml" // Delete mongo's service volume
             sh '''
               docker build -t test-api .
+              cat docker-compose.yaml
               docker-compose up -d
             '''
           }
