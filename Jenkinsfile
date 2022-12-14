@@ -73,29 +73,32 @@ pipeline {
         }
       }
     }
-    // stage ("Publish") {
-    //   steps {
-    //     parallel (
-    //       "publish" : {
-    //         script {
-    //           if (isRelease) {
-    //             // TODO
-    //           }
-    //         }
-    //       },
-    //       "tag" : {
-    //         script {
-    //           if (isRelease) {
-    //             sh "git checkout -b release/${version}"
-    //             sh "git clean -f"
-    //             sh "git tag ${newVersion}"
-    //             sh "git push --tags"
-    //           }
-    //         }
-    //       }
-    //     )
-    //   }
-    // }
+    stage ("Publish") {
+      steps {
+        parallel (
+          "publish" : {
+            script {
+              if (isRelease) {
+                sh """
+                  docker tag test-api devtube.azurecr.io/devtube-api:${newVersion}
+                  docker push devtube.azurecr.io/devtube-api:${newVersion}
+                """
+              }
+            }
+          }
+          // "tag" : {
+          //   script {
+          //     if (isRelease) {
+          //       sh "git checkout -b release/${version}"
+          //       sh "git clean -f"
+          //       sh "git tag ${newVersion}"
+          //       sh "git push --tags"
+          //     }
+          //   }
+          // }
+        )
+      }
+    }
   }
   post {
     always {
