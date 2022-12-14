@@ -51,11 +51,11 @@ pipeline {
               sh 'yq \'(.services.api.build | key) = \"image\" \' docker-compose.yaml | sponge docker-compose.yaml' // Replace key name 'build' to 'image'
             }
             sh 'yq \'(.services.api.image = \"test-api\" )\' docker-compose.yaml | sponge docker-compose.yaml' // Replace image value to actual api-test image
-            sh "yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml' docker-compose.yaml | sponge docker-compose.yaml" // Delete mongo's service volume
-            sh """
+            sh "yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml" // Delete mongo's service volume
+            sh '''
               docker build -t test-api .
               docker-compose up -d
-            """
+            '''
           }
         }
       }
