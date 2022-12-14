@@ -66,6 +66,7 @@ pipeline {
         script {
           if (isRelease) {
             dir('tests') {
+              sh "wget --tries=10 --waitretry=5 --retry-connrefused --retry-on-http-error=502 -O- http://localhost:3001/api/videos/random"
               sh 'python3 api-unitTest.py'
             }
           }
