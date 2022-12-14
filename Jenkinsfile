@@ -21,6 +21,7 @@ pipeline {
           if (isRelease) {
             version = "${env.BRANCH_NAME}".split('/')[1]
             // Fetch all tags
+            sh 'git remote -v'
             sh "git fetch --all --tags"
             // Print tags
             sh 'git tag'
