@@ -84,6 +84,7 @@ pipeline {
               if (isRelease) {
                 echo "Start Publish Stage"
                 sh """
+                  az login --identity
                   az acr login --name devtube
                   docker tag test-api devtube.azurecr.io/devtube-api:${newVersion}
                   docker push devtube.azurecr.io/devtube-api:${newVersion}
