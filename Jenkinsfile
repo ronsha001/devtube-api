@@ -19,6 +19,7 @@ pipeline {
       steps {
         script {
           if (isRelease) {
+            echo "Start Version Stage"
             version = "${env.BRANCH_NAME}".split('/')[1]
             // Fetch all tags
             sh "git fetch --all --tags"
@@ -46,6 +47,7 @@ pipeline {
       steps {
         script {
           if (isRelease) {
+            echo "Start Build Stage"
             usingBuild = sh(script: "yq '.services.api.build' docker-compose.yaml", returnStdout: true)
             if (usingBuild) {
               sh 'yq \'(.services.api.build | key) = \"image\" \' docker-compose.yaml | sponge docker-compose.yaml' // Replace key name 'build' to 'image'
@@ -61,9 +63,10 @@ pipeline {
         }
       }
     }
-    stage ("E2E Tests") {
+    stage ("Tests") {
       steps {
         script {
+          echo "Start Tests Stage"
           if (isRelease) {
             dir('tests') {
               sh "wget --tries=10 --waitretry=5 --retry-connrefused --retry-on-http-error=502 -O- http://localhost:3001/api/videos/random"
@@ -79,7 +82,9 @@ pipeline {
           "publish" : {
             script {
               if (isRelease) {
+                echo "Start Publish Stage"
                 sh """
+                  az acr login --name devtube
                   docker tag test-api devtube.azurecr.io/devtube-api:${newVersion}
                   docker push devtube.azurecr.io/devtube-api:${newVersion}
                 """
@@ -102,10 +107,11 @@ pipeline {
   }
   post {
     always {
-      sh '''
+      sh """
         docker-compose down
         docker image rm test-api
-      '''
+        docker image rm devtube.azurecr.io/devtube-api:${newVersion}
+      """
     }
   }
 }
