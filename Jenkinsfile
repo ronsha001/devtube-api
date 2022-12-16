@@ -114,7 +114,7 @@ pipeline {
     always {
       sh """
         docker-compose down
-        docker rm test-api
+        docker image rm test-api
         docker image rm devtube.azurecr.io/devtube-api:${newVersion}
       """
     }
