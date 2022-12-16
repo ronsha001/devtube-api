@@ -95,7 +95,7 @@ pipeline {
                 """
               }
             }
-          }
+          },
           "tag" : {
             script {
               if (isRelease) {
@@ -105,7 +105,7 @@ pipeline {
                 sh "git push --tags"
               }
             }
-          }
+          },
           "update-chart" : {
             script {
               if (isRelease) {
