@@ -52,7 +52,7 @@ pipeline {
             if (usingBuild) {
               sh 'yq \'(.services.api.build | key) = \"image\" \' docker-compose.yaml | sponge docker-compose.yaml' // Replace key name 'build' to 'image'
             }
-            sh 'yq \'(.services.api.image = \"test-api\" )\' docker-compose.yaml | sponge docker-compose.yaml' // Replace image value to actual api-test image
+            sh 'yq \'(.services.api.image = \"devtube.azurecr.io/devtube-api:${newVersion}\" )\' docker-compose.yaml | sponge docker-compose.yaml' // Replace image value to actual api-test image
             sh "yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml" // Delete mongo's service volume
             sh '''
               docker build -t test-api .
@@ -86,7 +86,6 @@ pipeline {
                 sh """
                   az login --identity
                   az acr login --name devtube
-                  docker tag test-api devtube.azurecr.io/devtube-api:${newVersion}
                   docker push devtube.azurecr.io/devtube-api:${newVersion}
                 """
               }
@@ -110,7 +109,6 @@ pipeline {
     always {
       sh """
         docker-compose down
-        docker image rm test-api
         docker image rm devtube.azurecr.io/devtube-api:${newVersion}
       """
     }
