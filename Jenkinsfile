@@ -1,5 +1,5 @@
 isRelease = false
-
+isFeature = false
 pipeline {
   agent any
 
@@ -11,6 +11,10 @@ pipeline {
             isRelease = true
             echo "IS RELEASE"
           }
+          if (env.BRANCH_NAME =~ "^feature/*") {
+            isFeature = true
+            echo "IS FEATURE"
+          }
         }
       }
     }
@@ -18,7 +22,7 @@ pipeline {
     stage ("Version") {
       steps {
         script {
-          if (isRelease) {
+          if (isRelease || isFeature) {
             echo "Start Version Stage"
             version = "${env.BRANCH_NAME}".split('/')[1]
             // Fetch all tags
@@ -46,7 +50,7 @@ pipeline {
     stage ("Build") {
       steps {
         script {
-          if (isRelease) {
+          if (isRelease || isFeature) {
             echo "Start Build Stage"
             usingBuild = sh(script: "yq '.services.api.build' docker-compose.yaml", returnStdout: true)
             if (usingBuild) {
@@ -67,7 +71,7 @@ pipeline {
       steps {
         script {
           echo "Start Tests Stage"
-          if (isRelease) {
+          if (isRelease || isFeature) {
             dir('tests') {
               sh "wget --tries=10 --waitretry=5 --retry-connrefused --retry-on-http-error=502 -O- http://localhost:3001/api/videos/random"
               sh 'python3 api-unitTest.py'
@@ -81,7 +85,7 @@ pipeline {
         parallel (
           "publish" : {
             script {
-              if (isRelease) {
+              if (isRelease || isFeature) {
                 echo "Start Publish Stage"
                 sh """
                   az login --identity
