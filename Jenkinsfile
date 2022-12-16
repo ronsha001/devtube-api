@@ -58,11 +58,11 @@ pipeline {
             }
             sh 'yq \'(.services.api.image = \"devtube.azurecr.io/devtube-api:${newVersion}\" )\' docker-compose.yaml | sponge docker-compose.yaml' // Replace image value to actual api-test image
             sh "yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml" // Delete mongo's service volume
-            sh '''
-              docker build -t test-api .
+            sh """
+              docker build -t devtube.azurecr.io/devtube-api:${newVersion} .
               cat docker-compose.yaml
               docker-compose up -d
-            '''
+            """
           }
         }
       }
