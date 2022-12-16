@@ -22,7 +22,7 @@ pipeline {
     stage ("Version") {
       steps {
         script {
-          if (isRelease || isFeature) {
+          if (isRelease) {
             echo "Start Version Stage"
             version = "${env.BRANCH_NAME}".split('/')[1]
             // Fetch all tags
@@ -85,7 +85,7 @@ pipeline {
         parallel (
           "publish" : {
             script {
-              if (isRelease || isFeature) {
+              if (isRelease) {
                 echo "Start Publish Stage"
                 sh """
                   az login --identity
@@ -96,16 +96,23 @@ pipeline {
               }
             }
           }
-          // "tag" : {
-          //   script {
-          //     if (isRelease) {
-          //       sh "git checkout -b release/${version}"
-          //       sh "git clean -f"
-          //       sh "git tag ${newVersion}"
-          //       sh "git push --tags"
-          //     }
-          //   }
-          // }
+          "tag" : {
+            script {
+              if (isRelease) {
+                sh "git checkout -b release/${version}"
+                sh "git clean -f"
+                sh "git tag ${newVersion}"
+                sh "git push --tags"
+              }
+            }
+          }
+          "update-chart" : {
+            script {
+              if (isRelease) {
+                // TODO
+              }
+            }
+          }
         )
       }
     }
