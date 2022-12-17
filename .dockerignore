@@ -3,3 +3,5 @@ tests/
 docker-compose.yaml
 Dockerfile
 .env.example
+.dockerignore
+.gitignore
