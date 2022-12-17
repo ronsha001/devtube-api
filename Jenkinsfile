@@ -110,10 +110,12 @@ pipeline {
             script {
               if (isRelease) {
                 sh "git clone git@github.com:ronsha001/devtube-chart.git"
+                echo "Update chart with new api image tag: ${newVersion}"
                 dir("devtube-chart/devtube") {
                   sh """
                     yq \'(.api.image_tag = \"${newVersion}\" )\' values.yaml | sponge values.yaml
-                    cat values.yaml
+                    git commit -am \"jenkins-api-update, version: ${newVersion}\"
+                    git push origin master
                   """
                 }
               }
