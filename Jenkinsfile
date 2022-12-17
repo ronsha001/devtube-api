@@ -109,7 +109,12 @@ pipeline {
           "update-chart" : {
             script {
               if (isRelease) {
-                // TODO
+                sh "git clone git@github.com:ronsha001/devtube-chart.git"
+                dir("devtube-chart/devtube") {
+                  sh """
+                    ls -al
+                  """
+                }
               }
             }
           }
