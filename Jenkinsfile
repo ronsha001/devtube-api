@@ -130,8 +130,12 @@ pipeline {
       sh """
         docker-compose down
         docker image rm test-api
-        docker image rm devtube.azurecr.io/devtube-api:${newVersion}
       """
+      script {
+        if (isRelease) {
+          sh "docker image rm devtube.azurecr.io/devtube-api:${newVersion}"
+        }
+      }
     }
   }
 }
