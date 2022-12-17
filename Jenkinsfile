@@ -112,7 +112,8 @@ pipeline {
                 sh "git clone git@github.com:ronsha001/devtube-chart.git"
                 dir("devtube-chart/devtube") {
                   sh """
-                    ls -al
+                    yq \'(.api.image_tag = \"${newVersion}\" )\' values.yaml | sponge values.yaml
+                    cat values.yaml
                   """
                 }
               }
