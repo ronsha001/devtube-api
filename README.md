@@ -26,63 +26,42 @@ You can read about the endpoints on the Endpoints section.
 
 ## Endpoints
 
-- /api/auth
+- `/api/auth`
+	- `/signup` - Create user. POST
+	- `/signin` - Sign in. POST
+	- `/google` - Google Authentication. POST
+- `/api/users`
 
-	- /signup - Create user. POST
+	- `/:id` - Update user. PUT
+	- `/:id` - Delete user. DELETE
+	- `/find/:id` - Get a user. GET
+	- `/sub/:id` - Subscribe to user. PUT
+	- `/unsub/:id` - Unsubscribe from user. PUT
+	- `/like/:videoId` - Like a video. PUT
+	- `/dislike/:videoId` - Dislike a video. PUT
 
-	- /signin - Sign in. POST
+- `/api/videos`
 
-	- /google - Google Authentication. POST
+	- `/` - Add video. POST
+	- `/:id` - Update video. PUT
+	- `/:id` - Delete video. DELETE
+	- `/find/my-videos/:id` - Get my videos. GET
+	- `/find/:id` - Get video. GET
+	- `/view/:id` - Increase video's view by 1. PUT
+	- `/trend` - Get most trend videos. GET
+	- `/random` - Get random videos. GET
+	- `/sub` - Get all videos from the channels you have subscribed to. GET
+	- `/search` - Search videos by title. GET
+	- `/:id/tags` - Get videos by Hashtags. GET
+	- `/:tag` - Get Videos by Hashtag. GET
 
-- /api/users
+- `/api/comments`
 
-	- /:id - Update user. PUT
+	- `/` - Add comment. POST
 
-	- /:id - Delete user. DELETE
+	- `/:id` - Delete comment. DELETE
 
-	- /find/:id - Get a user. GET
-
-	- /sub/:id - Subscribe to user. PUT
-
-	- /unsub/:id - Unsubscribe from user. PUT
-
-	- /like/:videoId - Like a video. PUT
-
-	- /dislike/:videoId - Dislike a video. PUT
-
-- /api/videos
-
-	- / - Add video. POST
-
-	- /:id - Update video. PUT
-
-	- /:id - Delete video. DELETE
-
-	- /find/my-videos/:id - Get my videos. GET
-
-	- /find/:id - Get video. GET
-
-	- /view/:id - Increase video's view by 1. PUT
-
-	- /trend - Get most trend videos. GET
-
-	- /random - Get random videos. GET
-
-	- /sub - Get all videos from the channels you have subscribed to. GET
-
-	- /search - Search videos by title. GET
-
-	- /:id/tags - Get videos by Hashtags. GET
-
-	- /:tag - Get Videos by Hashtag. GET
-
-- /api/comments
-
-	- / - Add comment. POST
-
-	- /:id - Delete comment. DELETE
-
-	- /:videoId - Get comments from a video. GET
+	- `/:videoId` - Get comments from a video. GET
 
   
 
