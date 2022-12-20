@@ -33,7 +33,7 @@ jobs:
           echo "NEW_TAG:  $NEW_TAG"
 
           NEW_VERSION="${VERSION}.${NEW_TAG}"
-          echo "NEW_VERSION=$NEW_VERSION' >> $GITHUB_OUTPUT
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
           # echo "::set-output name=NEW_VERSION::$NEW_VERSION"
         
           # echo "::set-output name=tag::$TAG"
