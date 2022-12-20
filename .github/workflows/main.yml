@@ -27,10 +27,7 @@ jobs:
           # echo "::set-output name=tag::$TAG"
         
       - name: Echo variables
-        with: 
-          version: ${{ env.VERSION }}
-          new_tag: ${{ env.NEW_TAG }}
         run: |
-          echo "$version"
-          echo "$new_tag"
+          echo ${{ env.VERSION }}
+          echo ${{ env.NEW_TAG }}
           echo $(python --version)
