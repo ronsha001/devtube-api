@@ -23,9 +23,9 @@ jobs:
           git fetch --all --tags
 
           echo "NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))" >> $GITHUB_ENV
-          echo "VERSION: $VERSION"
-          echo "NEW_TAG: $NEW_TAG"
-          
+          echo "VERSION: ${{ env.VERSION }}"
+          echo "NEW_TAG: ${{ env.NEW_TAG }}"
+
           echo "NEW_VERSION='${VERSION}.${NEW_TAG}'" >> $GITHUB_ENV
         
           # echo "::set-output name=tag::$TAG"
