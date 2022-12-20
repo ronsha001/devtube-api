@@ -16,6 +16,7 @@ jobs:
       # Extract the latest tag
       - name: Extract latest tag
         id: tag
+        if: startsWith(github.ref, 'refs/heads/release/')
         run: |
-          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          echo "::set-output name=tag::$TAG"
+          git tag
+          # echo "::set-output name=tag::$TAG"
