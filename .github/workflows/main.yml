@@ -1,0 +1,21 @@
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - release/*
+      - feature/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the code
+      - uses: actions/checkout@v2
+
+      # Extract the latest tag
+      - name: Extract latest tag
+        id: tag
+        run: |
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          echo "::set-output name=tag::$TAG"
