@@ -51,9 +51,9 @@ jobs:
           # Delete mongo's service volume
           yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml
           
-          # docker build -t test-api .
+          docker build -t test-api .
           cat docker-compose.yaml
-          # docker-compose up -d
+          docker-compose up -d
 
       - name: Tests
         run: |
