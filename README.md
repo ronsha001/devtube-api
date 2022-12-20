@@ -106,4 +106,4 @@ Creates a docker image of DevTube API.
 ### `docker-compose up`
 
 Will build DevTube API image and MongoDB image and run them on two separated containers that shares the same network.
-DevTube API will be exposed on port 3001, while the MongoDB won't be accessible from an outsider network
+DevTube API will be exposed on port 3001, while the MongoDB won't be accessible from an outsider network.
