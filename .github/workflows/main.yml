@@ -19,19 +19,22 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
-          export VERSION=${BRANCH_PARTS[3]}
-          echo "::set-output name=VERSION::$VERSION"
+          echo "VERSION=${BRANCH_PARTS[3]}" >> $GITHUB_OUTPUT
+          # export VERSION=${BRANCH_PARTS[3]}
+          # echo "::set-output name=VERSION::$VERSION"
 
           git fetch --all --tags
 
-          export NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))
-          echo "::set-output name=NEW_TAG::$NEW_TAG"
+          echo "NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))" >> $GITHUB_OUTPUT
+          # export NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))
+          # echo "::set-output name=NEW_TAG::$NEW_TAG"
 
           echo "VERSION: VERSION"
           echo "NEW_TAG: NEW_TAG"
 
-          export NEW_VERSION="${VERSION}.${NEW_TAG}"
-          echo "::set-output name=NEW_VERSION::$NEW_VERSION"
+          echo 'NEW_VERSION="${VERSION}.${NEW_TAG}"' >> $GITHUB_OUTPUT
+          # export NEW_VERSION="${VERSION}.${NEW_TAG}"
+          # echo "::set-output name=NEW_VERSION::$NEW_VERSION"
         
           # echo "::set-output name=tag::$TAG"
       - name: Echo variables
