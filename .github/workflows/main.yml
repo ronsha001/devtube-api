@@ -50,3 +50,4 @@ jobs:
           yq '(.services.api.image = "test-api")' docker-compose.yaml | sponge docker-compose.yaml
           # Delete mongo's service volume
           yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml
+          cat docker-compose.yaml
