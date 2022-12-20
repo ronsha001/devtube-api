@@ -2,7 +2,7 @@ version: "3"
 services:
 
   api:
-    build: .
+    image: .
     container_name: api
     restart: always
     environment:
