@@ -37,19 +37,18 @@ jobs:
 
       - name: Build
         run: |
-          sudo apt-get install moreutils
           usingBuild=$(yq '.services.api.build' docker-compose.yaml)
           if [ "$usingBuild" != "null" ]; then
             # Replace key name 'build' to 'image'
-            yq '(.services.api.build | key) = "image"' docker-compose.yaml | sponge docker-compose.yaml
+            yq e -i '(.services.api.build | key) = "image"' docker-compose.yaml
           else
             echo "not using build"
           fi
 
           # Replace image value to actual api-test image
-          yq '(.services.api.image = "test-api")' docker-compose.yaml | sponge docker-compose.yaml
+          yq e -i '(.services.api.image = "test-api")' docker-compose.yaml
           # Delete mongo's service volume
-          yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml
+          yq e -i 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml
           
           docker build -t test-api .
           cat docker-compose.yaml
@@ -75,3 +74,11 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
+
+      - name: Publish new tag
+        if: startsWith(github.ref, 'refs/heads/release/')
+        run: |
+          git checkout -b release/${{ steps.tag.outputs.VERSION }}
+          git clean -f
+          git tag ${{ steps.tag.outputs.NEW_VERSION }}
+          git push --tags
