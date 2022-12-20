@@ -50,4 +50,14 @@ jobs:
           yq '(.services.api.image = "test-api")' docker-compose.yaml | sponge docker-compose.yaml
           # Delete mongo's service volume
           yq 'del(.services.mongo.volumes, .volumes)' docker-compose.yaml | sponge docker-compose.yaml
+          
+          docker build -t test-api .
           cat docker-compose.yaml
+          docker-compose up -d
+
+      - name: Tests
+        run: |
+          wget --tries=10 --waitretry=5 --retry-connrefused --retry-on-http-error=502 -O- http://localhost:3001/api/videos/random
+          pushd tests
+            python3 api-unitTest.py
+          popd
