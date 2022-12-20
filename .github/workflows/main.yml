@@ -92,7 +92,8 @@ jobs:
         run: |
           git clone https://${{ secrets.USERNAME }}:${{ secrets.TOKEN }}@github.com/ronsha001/devtube-chart.git
           echo "Update chart with new api image tag: ${{ steps.tag.outputs.NEW_VERSION }}"
-
+            git config --global user.email "you@example.com"
+            git config --global user.name "IamGithubActions"
           pushd devtube-chart/devtube
             yq e -i '(.api.image_tag = "${{ steps.tag.outputs.NEW_VERSION }}")' values.yaml
             git commit -am "jenkins-api-update, version: ${newVersion}"
