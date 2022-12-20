@@ -18,6 +18,15 @@ jobs:
         id: tag
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
+          BRANCH_PARTS = ($(echo "$GITHUB_REF" | tr '/' ' '))
+          VERSION = ${BRANCH_PARTS[1]}
+
           git fetch --all --tags
-          echo $(git tag)
+
+          NEW_TAG = ($(git tag | grep ^${VERSION} | sort --version-sort | tail -1 | cut -d '.' -f 3))
           # echo "::set-output name=tag::$TAG"
+        
+      - name: Echo variables
+        run: |
+          echo "VERSION: ${VERSION}"
+          echo "NEW_TAG: ${NEW_TAG}"
