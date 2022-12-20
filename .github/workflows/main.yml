@@ -18,5 +18,6 @@ jobs:
         id: tag
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
+          git fetch --all --tags
           echo $(git tag)
           # echo "::set-output name=tag::$TAG"
