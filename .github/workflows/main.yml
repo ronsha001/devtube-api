@@ -23,10 +23,10 @@ jobs:
 
           git fetch --all --tags
 
-          NEW_TAG=($(git tag | grep ^${VERSION} | sort --version-sort | tail -1 | cut -d '.' -f 3))
+          NEW_TAG=($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3))
           # echo "::set-output name=tag::$TAG"
         
       - name: Echo variables
         run: |
-          echo "VERSION: ${VERSION}"
-          echo "NEW_TAG: ${NEW_TAG}"
+          echo "VERSION: $VERSION"
+          echo "NEW_TAG: $NEW_TAG"
