@@ -20,7 +20,7 @@ jobs:
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
           VERSION=${BRANCH_PARTS[1]}
-
+          echo "VERSION: $VERSION"
           git fetch --all --tags
 
           NEW_TAG=($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3))
