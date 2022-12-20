@@ -38,3 +38,7 @@ jobs:
       - name: Build
         run: |
           ls -al
+          usingBuild=$(yq '.services.api.build' docker-compose.yaml)
+          if $usingBuild; then
+            cat docker-compose.yaml
+          fi
