@@ -20,13 +20,12 @@ jobs:
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
           echo "VERSION=${BRANCH_PARTS[3]}" >> $GITHUB_ENV
-          echo "VERSION: $VERSION"
           git fetch --all --tags
 
           echo "NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))" >> $GITHUB_ENV
-          echo "NEW_VERSION='$VERSION.$NEW_TAG'" >> $GITHUB_ENV
-          # echo "::set-output name=tag::$TAG"
+          echo "NEW_VERSION=${{ env.VERSION }}.${{ env.NEW_TAG }}" >> $GITHUB_ENV
         
+          # echo "::set-output name=tag::$TAG"
       - name: Echo variables
         run: |
           echo ${{ env.VERSION }}
