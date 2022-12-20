@@ -86,3 +86,16 @@ jobs:
           git clean -f
           git tag ${{ steps.tag.outputs.NEW_VERSION }}
           git push --tags
+
+      - name: Publish to devtube-chart
+        if: startsWith(github.ref, 'refs/heads/release/')
+        run: |
+          git clone git@github.com:ronsha001/devtube-chart.git
+          echo "Update chart with new api image tag: ${{ steps.tag.outputs.NEW_VERSION }}"
+
+          pushd devtube-chart/devtube
+            yq e -i '(.api.image_tag = "${{ steps.tag.outputs.NEW_VERSION }}")' values.yaml
+            git commit -am "jenkins-api-update, version: ${newVersion}"
+            git push origin master
+          popd
+
