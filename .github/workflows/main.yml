@@ -37,6 +37,7 @@ jobs:
 
       - name: Build
         run: |
+          sudo apt-get install moreutils
           ls -al
           usingBuild=$(yq '.services.api.build' docker-compose.yaml)
           if [ "$usingBuild" != "null" ]; then
