@@ -19,7 +19,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
-          VERSION=${BRANCH_PARTS[3]}
+          export VERSION=${BRANCH_PARTS[3]}
           echo "VERSION: $VERSION"
           git fetch --all --tags
 
