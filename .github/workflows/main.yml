@@ -13,35 +13,28 @@ jobs:
       # Check out the code
       - uses: actions/checkout@v2
 
-      # Extract the latest tag
-      - name: Extract latest tag
+      # Extract the latest tag and increase it by 1
+      - name: Generate patch tag
         id: tag
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
           VERSION=${BRANCH_PARTS[3]}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          # echo "::set-output name=VERSION::$VERSION"
 
           git fetch --all --tags
 
           NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
-          # echo "::set-output name=NEW_TAG::$NEW_TAG"
 
-          echo "VERSION:  $VERSION"
-          echo "NEW_TAG:  $NEW_TAG"
 
           NEW_VERSION="${VERSION}.${NEW_TAG}"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
-          # echo "::set-output name=NEW_VERSION::$NEW_VERSION"
-        
-          # echo "::set-output name=tag::$TAG"
-      - name: Echo variables
+
+          echo "VERSION:  $VERSION"
+          echo "NEW_TAG:  $NEW_TAG"
+          echo "NEW_VERSION:  $NEW_VERSION"
+
+      - name: Build
         run: |
-          echo ${{ steps.tag.outputs.VERSION }}
-          echo ${{ steps.tag.outputs.NEW_TAG }}
-          echo ${{ steps.tag.outputs.NEW_VERSION }}
-          echo $(python --version)
-          echo $(yq --version)
-          echo $(jq --version)
+          ls -al
