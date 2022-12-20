@@ -19,21 +19,26 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           BRANCH_PARTS=($(echo "$GITHUB_REF" | tr '/' ' '))
-          echo "VERSION=${BRANCH_PARTS[3]}" >> $GITHUB_ENV
+          export VERSION=${BRANCH_PARTS[3]}
+          echo "::set-env name=VERSION::$VERSION"
+
           git fetch --all --tags
 
-          echo "NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))" >> $GITHUB_ENV
-          echo "VERSION: ${{ env.VERSION }}"
-          echo "NEW_TAG: ${{ env.NEW_TAG }}"
+          export NEW_TAG=$(($(git tag | grep ^$VERSION | sort --version-sort | tail -1 | cut -d '.' -f 3) + 1))
+          echo "::set-env name=NEW_TAG::$NEW_TAG"
 
-          echo "NEW_VERSION='${VERSION}.${NEW_TAG}'" >> $GITHUB_ENV
+          echo "VERSION: VERSION"
+          echo "NEW_TAG: NEW_TAG"
+
+          export NEW_VERSION="${VERSION}.${NEW_TAG}"
+          echo "::set-env name=NEW_VERSION::$NEW_VERSION"
         
           # echo "::set-output name=tag::$TAG"
       - name: Echo variables
         run: |
-          echo ${{ env.VERSION }}
-          echo ${{ env.NEW_TAG }}
-          echo ${{ env.NEW_VERSION }}
+          echo $VERSION
+          echo $NEW_TAG
+          echo $NEW_VERSION
           echo $(python --version)
           echo $(yq --version)
           echo $(jq --version)
