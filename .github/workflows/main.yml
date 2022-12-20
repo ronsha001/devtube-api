@@ -70,15 +70,19 @@ jobs:
 
       - name: Publish To ACR
         if: startsWith(github.ref, 'refs/heads/release/')
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
+        run: |
+          docker tag test-api ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
+          docker push ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
+
+        # uses: docker/build-push-action@v2
+        # with:
+        #   push: true
+        #   tags: ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
 
       - name: Publish new tag
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
-          git checkout -b release/${{ steps.tag.outputs.VERSION }}
+          git checkout release/${{ steps.tag.outputs.VERSION }}
           git clean -f
           git tag ${{ steps.tag.outputs.NEW_VERSION }}
           git push --tags
