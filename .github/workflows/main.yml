@@ -61,3 +61,17 @@ jobs:
           pushd tests
             python3 api-unitTest.py
           popd
+      
+      - name: Login into registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.ACR_ENDPOINT }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Publish To ACR
+        if: startsWith(github.ref, 'refs/heads/release/')
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}

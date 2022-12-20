@@ -2,7 +2,7 @@ import requests
 
 def signup():
   try:
-    userData = {'email': 'test@example.com', 'passwor': 'test123', 'name': 'IAMtest'}
+    userData = {'email': 'test@example.com', 'password': 'test123', 'name': 'IAMtest'}
     return requests.post("http://localhost:3001/api/auth/signup", json = userData)
   except:
     raise Exception("Couldn't reach to localhost:3001/api/auth/signup and signup")
