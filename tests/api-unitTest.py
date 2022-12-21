@@ -19,6 +19,12 @@ def health():
   except:
     raise Exception("Unhealthy.")
 
+def say_hello():
+  try:
+    return requests.get("http://localhost:3001/api/say-hello")
+  except:
+    raise Exception("Unhealthy.")
+
 data = signup()
 print(data.content)
 if data.status_code != 200:
@@ -28,3 +34,6 @@ data = signin()
 print(data.content)
 if data.status_code != 200:
   raise Exception(f"Getting videos/random went wrong. status_code: {data.status_code}")
+
+health()
+say_hello()

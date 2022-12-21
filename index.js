@@ -32,6 +32,9 @@ app.use("/api/comments", commentRoutes);
 app.get("/api/health", (req, res, next) => {
   res.status(200).send("OK")
 })
+app.get("/api/say-hello", (req, res, next) => {
+  res.status(200).send("Hello World")
+})
 
 //error handler
 app.use((err, req, res, next) => {
