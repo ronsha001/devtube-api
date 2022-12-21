@@ -13,6 +13,12 @@ def signin():
   except:
     raise Exception("Couldn't reach to localhost:3001/api/videos/random")
 
+def health():
+  try:
+    return requests.get("http://localhost:3001/api/health")
+  except:
+    raise Exception("Unhealthy.")
+
 data = signup()
 print(data.content)
 if data.status_code != 200:
