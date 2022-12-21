@@ -29,7 +29,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/comments", commentRoutes);
-
+app.get("/api/health", (req, res, next) => {
+  res.status(200).send("OK")
+})
 //error handler
 app.use((err, req, res, next) => {
   const status = err.status || 500;
