@@ -35,6 +35,9 @@ app.get("/api/health", (req, res, next) => {
 app.get("/api/say-hello", (req, res, next) => {
   res.status(200).send("Hello World")
 })
+app.get("/api/rotem", (req, res, next) => {
+  res.status(200).send("Hello Rotem !!!")
+})
 
 //error handler
 app.use((err, req, res, next) => {
