@@ -96,7 +96,7 @@ jobs:
           git config --global user.name "IamGithubActions"
           pushd devtube-chart/devtube
             yq e -i '(.api.image_tag = "${{ steps.tag.outputs.NEW_VERSION }}")' values.yaml
-            git commit -am "Github-Actions-api-update, version: ${newVersion}"
+            git commit -am "Github-Actions-api-update, version: ${{ steps.tag.outputs.NEW_VERSION }}"
             git push origin master
           popd
 
