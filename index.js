@@ -38,7 +38,6 @@ app.get("/api/say-hello", (req, res, next) => {
 app.get("/api/rotem", (req, res, next) => {
   res.status(200).send("Hello Rotem !!!")
 })
-// test
 
 //error handler
 app.use((err, req, res, next) => {

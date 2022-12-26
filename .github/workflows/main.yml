@@ -5,7 +5,6 @@ on:
     branches:
       - release/*
       - feature/*
-      - master
 
 jobs:
   build:
@@ -35,10 +34,6 @@ jobs:
           echo "VERSION:  $VERSION"
           echo "NEW_TAG:  $NEW_TAG"
           echo "NEW_VERSION:  $NEW_VERSION"
-      - name: test
-        if: startsWith(github.ref, 'refs/heads/master')
-        run: |
-          echo ${{ github.event.head_commit.message }}
       - name: Build
         run: |
           usingBuild=$(yq '.services.api.build' docker-compose.yaml)
