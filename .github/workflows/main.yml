@@ -74,11 +74,6 @@ jobs:
           docker tag test-api ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
           docker push ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
 
-        # uses: docker/build-push-action@v2
-        # with:
-        #   push: true
-        #   tags: ${{ secrets.ACR_ENDPOINT }}/devtube-api:${{ steps.tag.outputs.NEW_VERSION }}
-
       - name: Publish new tag
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
