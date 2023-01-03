@@ -35,6 +35,9 @@ app.get("/api/health", (req, res, next) => {
 app.get("/api/test", (req, res, next) => {
   res.status(200).send("TEST OK")
 })
+app.get("/api/hello-sahar", (req, res, next) => {
+  res.status(200).send("HELLO Sahar")
+})
 //error handler
 app.use((err, req, res, next) => {
   const status = err.status || 500;
